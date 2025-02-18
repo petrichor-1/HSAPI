@@ -20,7 +20,8 @@ let package = Package(
             name: "HSAPITests",
             dependencies: ["HSAPI"],
             resources: [
-                .process("projects/connectthepipes.hopscotch")
+                .process("projects/connectthepipes.hopscotch"),
+                .process("projects/mooseisland.hopscotch")
             ]
         ),
     ]

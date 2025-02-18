@@ -29,6 +29,8 @@ extension LowLevelCustomObject: Decodable {
 				case .createdDate: 
 					if let createdDate = try? container.decode(Date.self, forKey: key) {
 						self.createdDate = createdDate
+					} else if let createdDateString = try? container.decode(String.self, forKey: key), let createdDate = HSDateFormatter.singleton.date(from: createdDateString) { // Silly hack because Hopscotch produces slightly nonstandard dates, for some reason
+						self.createdDate = createdDate
 					} else {
 						extraData[key.stringValue] = try container.decode(JSONType.self, forKey: key)
 					}
@@ -58,6 +60,8 @@ extension LowLevelCustomObject: Decodable {
 					}
 				case .updatedDate: 
 					if let updatedDate = try? container.decode(Date.self, forKey: key) {
+						self.updatedDate = updatedDate
+					} else if let updatedDateString = try? container.decode(String.self, forKey: key), let updatedDate = HSDateFormatter.singleton.date(from: updatedDateString) { // Silly hack because Hopscotch produces slightly nonstandard dates, for some reason
 						self.updatedDate = updatedDate
 					} else {
 						extraData[key.stringValue] = try container.decode(JSONType.self, forKey: key)

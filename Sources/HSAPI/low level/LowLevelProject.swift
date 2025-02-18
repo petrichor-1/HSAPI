@@ -59,6 +59,8 @@ extension LowLevelProject: Decodable {
 				case .editedAt:
 					if let editedAt = try? container.decode(Date.self, forKey: key) {
 						self.editedAt = editedAt
+					} else if let editedAtString = try? container.decode(String.self, forKey: key), let editedAt = HSDateFormatter.singleton.date(from: editedAtString) { // Silly hack because Hopscotch produces slightly nonstandard dates, for some reason
+						self.editedAt = editedAt
 					} else {
 						extraData[key.stringValue] = try container.decode(JSONType.self, forKey: key)
 					}
