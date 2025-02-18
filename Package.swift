@@ -18,7 +18,10 @@ let package = Package(
             name: "HSAPI"),
         .testTarget(
             name: "HSAPITests",
-            dependencies: ["HSAPI"]
+            dependencies: ["HSAPI"],
+            resources: [
+                .process("projects/connectthepipes.hopscotch")
+            ]
         ),
     ]
 )
