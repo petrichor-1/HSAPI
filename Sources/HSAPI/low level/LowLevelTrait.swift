@@ -8,7 +8,7 @@ struct LowLevelTrait {
 	var extraData = [String: JSONType]()
 }
 
-extension LowLevelTrait: Decodable {
+extension LowLevelTrait: Codable {
 	enum CodingKeys: String, CodingKey {
 		case description
 		case traitID = "HSTraitIDKey"
@@ -60,4 +60,17 @@ extension LowLevelTrait: Decodable {
             extraData[key.stringValue] = value
         }
     }
+
+	func encode(to encoder: Encoder) throws {
+		var extraDataContainer = encoder.container(keyedBy: ArbitraryStringCodingKeys.self)
+		for (key, value) in extraData {
+			try extraDataContainer.encode(value, forKey: ArbitraryStringCodingKeys(stringValue: key))
+		}
+		var mainContainer = encoder.container(keyedBy: CodingKeys.self)
+		try mainContainer.encodeIfPresent(description, forKey: .description)
+		try mainContainer.encodeIfPresent(traitID, forKey: .traitID)
+		try mainContainer.encodeIfPresent(objectID, forKey: .objectID)
+		try mainContainer.encodeIfPresent(objectParameterType, forKey: .objectParameterType)
+		try mainContainer.encodeIfPresent(type, forKey: .type)
+	}
 }

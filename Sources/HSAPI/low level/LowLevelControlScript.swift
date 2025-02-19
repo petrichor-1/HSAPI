@@ -4,7 +4,7 @@ struct LowLevelControlScript {
 	var extraData = [String: JSONType]()
 }
 
-extension LowLevelControlScript: Decodable {
+extension LowLevelControlScript: Codable {
 	enum CodingKeys: String, CodingKey {
 		case abilityID
 	}
@@ -28,4 +28,13 @@ extension LowLevelControlScript: Decodable {
             extraData[key.stringValue] = value
         }
     }
+
+	func encode(to encoder: Encoder) throws {
+		var extraDataContainer = encoder.container(keyedBy: ArbitraryStringCodingKeys.self)
+		for (key, value) in extraData {
+			try extraDataContainer.encode(value, forKey: ArbitraryStringCodingKeys(stringValue: key))
+		}
+		var mainContainer = encoder.container(keyedBy: CodingKeys.self)
+		try mainContainer.encodeIfPresent(abilityID, forKey: .abilityID)
+	}
 }

@@ -24,7 +24,7 @@ struct LowLevelProject {
 	var extraData = [String: JSONType]()
 }
 
-extension LowLevelProject: Decodable {
+extension LowLevelProject: Codable {
 	enum CodingKeys: String, CodingKey {
 		case baseObjectScale = "baseObjectScale"
 		case editedAt = "edited_at"
@@ -167,4 +167,35 @@ extension LowLevelProject: Decodable {
             extraData[key.stringValue] = value
         }
     }
+
+	func encode(to encoder: Encoder) throws {
+		var extraDataContainer = encoder.container(keyedBy: ArbitraryStringCodingKeys.self)
+		for (key, value) in extraData {
+			try extraDataContainer.encode(value, forKey: ArbitraryStringCodingKeys(stringValue: key))
+		}
+		var mainContainer = encoder.container(keyedBy: CodingKeys.self)
+		try mainContainer.encodeIfPresent(baseObjectScale, forKey: .baseObjectScale)
+		//TODO: Should this match the app's behavior?
+		try mainContainer.encodeIfPresent(editedAt, forKey: .editedAt)
+		try mainContainer.encodeIfPresent(fontSize, forKey: .fontSize)
+		try mainContainer.encodeIfPresent(playerVersion, forKey: .playerVersion)
+		try mainContainer.encodeIfPresent(requiresBetaEditor, forKey: .requiresBetaEditor)
+		try mainContainer.encodeIfPresent(stageSize, forKey: .stageSize)
+		try mainContainer.encodeIfPresent(version, forKey: .version)
+		try mainContainer.encodeIfPresent(abilities, forKey: .abilities)
+		try mainContainer.encodeIfPresent(customObjects, forKey: .customObjects)
+		try mainContainer.encodeIfPresent(customRuleInstances, forKey: .customRuleInstances)
+		try mainContainer.encodeIfPresent(eventParameters, forKey: .eventParameters)
+		try mainContainer.encodeIfPresent(rules, forKey: .rules)
+		try mainContainer.encodeIfPresent(scenes, forKey: .scenes)
+		try mainContainer.encodeIfPresent(sceneReference, forKey: .sceneReference)
+		try mainContainer.encodeIfPresent(traits, forKey: .traits)
+		try mainContainer.encodeIfPresent(variables, forKey: .variables)
+		var playerUpgradesContainer = mainContainer.nestedContainer(keyedBy: ArbitraryStringCodingKeys.self, forKey: .playerUpgrades)
+		if let playerUpgrades {
+			for upgrade in playerUpgrades {
+				try playerUpgradesContainer.encode(upgrade.to, forKey: ArbitraryStringCodingKeys(stringValue: upgrade.from))
+			}
+		}
+	}
 }

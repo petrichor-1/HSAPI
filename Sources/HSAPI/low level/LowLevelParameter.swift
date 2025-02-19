@@ -9,7 +9,7 @@ struct LowLevelParameter {
 	var extraData = [String: JSONType]()
 }
 
-extension LowLevelParameter: Decodable {
+extension LowLevelParameter: Codable {
 	enum CodingKeys: String, CodingKey {
 		case defaultValue
 		case value
@@ -73,4 +73,18 @@ extension LowLevelParameter: Decodable {
 			self.datum = .setImage(setImageDatum)
 		}
     }
+
+	func encode(to encoder: Encoder) throws {
+		var extraDataContainer = encoder.container(keyedBy: ArbitraryStringCodingKeys.self)
+		for (key, value) in extraData {
+			try extraDataContainer.encode(value, forKey: ArbitraryStringCodingKeys(stringValue: key))
+		}
+		var mainContainer = encoder.container(keyedBy: CodingKeys.self)
+		try mainContainer.encodeIfPresent(defaultValue, forKey: .defaultValue)
+		try mainContainer.encodeIfPresent(value, forKey: .value)
+		try mainContainer.encodeIfPresent(key, forKey: .key)
+		try mainContainer.encodeIfPresent(type, forKey: .type)
+		try mainContainer.encodeIfPresent(variable, forKey: .variable)
+		try mainContainer.encodeIfPresent(datum, forKey: .datum)
+	}
 }

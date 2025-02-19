@@ -5,10 +5,11 @@ struct LowLevelVariable {
 	/// Only on local variables
 	var description: String?
 
+	/// Extra data. Will be overwritten by values in full regular properties when jsonified, if applicable
 	var extraData = [String: JSONType]()
 }
 
-extension LowLevelVariable: Decodable {
+extension LowLevelVariable: Codable {
 	enum CodingKeys: String, CodingKey {
 		case name
 		case id = "objectIdString"
@@ -53,4 +54,16 @@ extension LowLevelVariable: Decodable {
             extraData[key.stringValue] = value
         }
     }
+
+	func encode(to encoder: Encoder) throws {
+		var extraDataContainer = encoder.container(keyedBy: ArbitraryStringCodingKeys.self)
+		for (key, value) in extraData {
+			try extraDataContainer.encode(value, forKey: ArbitraryStringCodingKeys(stringValue: key))
+		}
+		var mainContainer = encoder.container(keyedBy: CodingKeys.self)
+		try mainContainer.encodeIfPresent(name, forKey: .name)
+		try mainContainer.encodeIfPresent(id, forKey: .id)
+		try mainContainer.encodeIfPresent(type, forKey: .type)
+		try mainContainer.encodeIfPresent(description, forKey: .description)
+	}
 }

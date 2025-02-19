@@ -1,6 +1,7 @@
 import Foundation
 
 struct LowLevelCustomObject {
+	// TODO: Date? Or should this low level object be strings, and it is parsed to dates later on?
 	var createdDate: Date?
 	var fileName: String?
 	var id: String?
@@ -11,7 +12,7 @@ struct LowLevelCustomObject {
 	var extraData = [String: JSONType?]()
 }
 
-extension LowLevelCustomObject: Decodable {
+extension LowLevelCustomObject: Codable {
 	enum CodingKeys: String, CodingKey {
 		case createdDate
 		case fileName
@@ -74,4 +75,20 @@ extension LowLevelCustomObject: Decodable {
             extraData[key.stringValue] = value
         }
     }
+
+	func encode(to encoder: Encoder) throws {
+		var extraDataContainer = encoder.container(keyedBy: ArbitraryStringCodingKeys.self)
+		for (key, value) in extraData {
+			try extraDataContainer.encode(value, forKey: ArbitraryStringCodingKeys(stringValue: key))
+		}
+		var mainContainer = encoder.container(keyedBy: CodingKeys.self)
+		// TODO: Should we imitate the app's encoding behavior here?
+		try mainContainer.encodeIfPresent(createdDate, forKey: .createdDate)
+		try mainContainer.encodeIfPresent(fileName, forKey: .fileName)
+		try mainContainer.encodeIfPresent(id, forKey: .id)
+		try mainContainer.encodeIfPresent(name, forKey: .name)
+		try mainContainer.encodeIfPresent(size, forKey: .size)
+		// TODO: Should we imitate the app's encoding behavior here?
+		try mainContainer.encodeIfPresent(updatedDate, forKey: .updatedDate)
+	}
 }

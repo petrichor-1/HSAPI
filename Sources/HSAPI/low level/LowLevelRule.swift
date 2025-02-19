@@ -9,7 +9,7 @@ struct LowLevelRule {
 	var extraData = [String: JSONType]()
 }
 
-extension LowLevelRule: Decodable {
+extension LowLevelRule: Codable {
 	enum CodingKeys: String, CodingKey {
 		case abilityID
 		case id
@@ -68,4 +68,18 @@ extension LowLevelRule: Decodable {
             extraData[key.stringValue] = value
         }
     }
+
+	func encode(to encoder: Encoder) throws {
+		var extraDataContainer = encoder.container(keyedBy: ArbitraryStringCodingKeys.self)
+		for (key, value) in extraData {
+			try extraDataContainer.encode(value, forKey: ArbitraryStringCodingKeys(stringValue: key))
+		}
+		var mainContainer = encoder.container(keyedBy: CodingKeys.self)
+		try mainContainer.encodeIfPresent(abilityID, forKey: .abilityID)
+		try mainContainer.encodeIfPresent(id, forKey: .id)
+		try mainContainer.encodeIfPresent(objectID, forKey: .objectID)
+		try mainContainer.encodeIfPresent(name, forKey: .name)
+		try mainContainer.encodeIfPresent(parameters, forKey: .parameters)
+		try mainContainer.encodeIfPresent(ruleBlockType, forKey: .ruleBlockType)
+	}
 }

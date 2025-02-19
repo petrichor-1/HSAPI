@@ -6,7 +6,7 @@ struct LowLevelStageSize {
 	var extraData = [String: JSONType]()
 }
 
-extension LowLevelStageSize: Decodable {
+extension LowLevelStageSize: Codable {
 	enum CodingKeys: String, CodingKey {
 		case width
 		case height
@@ -37,4 +37,14 @@ extension LowLevelStageSize: Decodable {
             extraData[key.stringValue] = value
         }
     }
+
+	func encode(to encoder: Encoder) throws {
+		var extraDataContainer = encoder.container(keyedBy: ArbitraryStringCodingKeys.self)
+		for (key, value) in extraData {
+			try extraDataContainer.encode(value, forKey: ArbitraryStringCodingKeys(stringValue: key))
+		}
+		var mainContainer = encoder.container(keyedBy: CodingKeys.self)
+		try mainContainer.encodeIfPresent(width, forKey: .width)
+		try mainContainer.encodeIfPresent(height, forKey: .height)
+	}
 }

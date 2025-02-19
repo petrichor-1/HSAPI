@@ -7,7 +7,7 @@ struct LowLevelScene {
 	var extraData = [String: JSONType]()
 }
 
-extension LowLevelScene: Decodable {
+extension LowLevelScene: Codable {
 	enum CodingKeys: String, CodingKey {
 		case filename
 		case name
@@ -52,4 +52,16 @@ extension LowLevelScene: Decodable {
             extraData[key.stringValue] = value
         }
     }
+
+	func encode(to encoder: Encoder) throws {
+		var extraDataContainer = encoder.container(keyedBy: ArbitraryStringCodingKeys.self)
+		for (key, value) in extraData {
+			try extraDataContainer.encode(value, forKey: ArbitraryStringCodingKeys(stringValue: key))
+		}
+		var mainContainer = encoder.container(keyedBy: CodingKeys.self)
+		try mainContainer.encodeIfPresent(filename, forKey: .filename)
+		try mainContainer.encodeIfPresent(name, forKey: .name)
+		try mainContainer.encodeIfPresent(id, forKey: .id)
+		try mainContainer.encodeIfPresent(objects, forKey: .objects)
+	}
 }

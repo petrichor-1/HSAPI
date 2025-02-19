@@ -6,10 +6,11 @@ enum LowLevelParameterDatum {
 	/// Character for set image. Will ALWAYS be read for set image parameter types, matching webplayer functionality
 	case setImage(LowLevelSetImageDatum)
 	case sceneReference(LowLevelSceneReference)
+	// TODO: Add extraData to this!
 	case nonLocalVariable(id: String)
 }
 
-extension LowLevelParameterDatum: Decodable {
+extension LowLevelParameterDatum: Codable {
 	init(from decoder: Decoder) throws {
 		// TODO: Is this order correct?
 		if let container = try? decoder.container(keyedBy: ArbitraryStringCodingKeys.self) {
@@ -36,6 +37,24 @@ extension LowLevelParameterDatum: Decodable {
 			self = .sceneReference(sceneReference)
 		} else {
 			self = .trait(trait)
+		}
+	}
+
+	func encode(to encoder: Encoder) throws {
+		switch self {
+		case let .block(block):
+			try block.encode(to: encoder)
+		case let .trait(trait):
+			try trait.encode(to: encoder)
+		case let .localVariable(localVariable):
+			try localVariable.encode(to: encoder)
+		case let .setImage(datum):
+			try datum.encode(to: encoder)
+		case let .sceneReference(sceneReference):
+			try sceneReference.encode(to: encoder)
+		case let .nonLocalVariable(id: id):
+			var container = encoder.container(keyedBy: ArbitraryStringCodingKeys.self)
+			try container.encode(id, forKey: ArbitraryStringCodingKeys(stringValue: "variable"))
 		}
 	}
 }

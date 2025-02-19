@@ -9,7 +9,7 @@ struct LowLevelAbility {
 	var extraData = [String: JSONType]()
 }
 
-extension LowLevelAbility: Decodable {
+extension LowLevelAbility: Codable {
 	enum CodingKeys: String, CodingKey {
 		case abilityID
 		case blocks
@@ -61,4 +61,17 @@ extension LowLevelAbility: Decodable {
             extraData[key.stringValue] = value
         }
     }
+
+	func encode(to encoder: Encoder) throws {
+		var extraDataContainer = encoder.container(keyedBy: ArbitraryStringCodingKeys.self)
+		for (key, value) in extraData {
+			try extraDataContainer.encode(value, forKey: ArbitraryStringCodingKeys(stringValue: key))
+		}
+		var mainContainer = encoder.container(keyedBy: CodingKeys.self)
+		try mainContainer.encode(abilityID, forKey: .abilityID)
+		try mainContainer.encode(blocks, forKey: .blocks)
+		try mainContainer.encode(createdAt, forKey: .createdAt)
+		try mainContainer.encode(name, forKey: .name)
+		try mainContainer.encode(parameters, forKey: .parameters)
+	}
 }

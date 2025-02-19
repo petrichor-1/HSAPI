@@ -7,7 +7,7 @@ struct LowLevelSceneReference {
 	var extraData = [String: JSONType]()
 }
 
-extension LowLevelSceneReference: Decodable {
+extension LowLevelSceneReference: Codable {
 	enum CodingKeys: String, CodingKey {
 		case id
 		case blockType
@@ -52,4 +52,16 @@ extension LowLevelSceneReference: Decodable {
             extraData[key.stringValue] = value
         }
     }
+
+	func encode(to encoder: Encoder) throws {
+		var extraDataContainer = encoder.container(keyedBy: ArbitraryStringCodingKeys.self)
+		for (key, value) in extraData {
+			try extraDataContainer.encode(value, forKey: ArbitraryStringCodingKeys(stringValue: key))
+		}
+		var mainContainer = encoder.container(keyedBy: CodingKeys.self)
+		try mainContainer.encodeIfPresent(id, forKey: .id)
+		try mainContainer.encodeIfPresent(blockType, forKey: .blockType)
+		try mainContainer.encodeIfPresent(description, forKey: .description)
+		try mainContainer.encodeIfPresent(scene, forKey: .scene)
+	}
 }

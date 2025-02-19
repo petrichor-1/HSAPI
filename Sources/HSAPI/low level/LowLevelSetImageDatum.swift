@@ -11,7 +11,7 @@ struct LowLevelSetImageDatum {
 	var extraData = [String: JSONType]()
 }
 
-extension LowLevelSetImageDatum: Decodable {
+extension LowLevelSetImageDatum: Codable {
 	enum CodingKeys: String, CodingKey {
 		case customObject
 		case text
@@ -63,4 +63,17 @@ extension LowLevelSetImageDatum: Decodable {
             extraData[key.stringValue] = value
         }
     }
+
+	func encode(to encoder: Encoder) throws {
+		var extraDataContainer = encoder.container(keyedBy: ArbitraryStringCodingKeys.self)
+		for (key, value) in extraData {
+			try extraDataContainer.encode(value, forKey: ArbitraryStringCodingKeys(stringValue: key))
+		}
+		var mainContainer = encoder.container(keyedBy: CodingKeys.self)
+		try mainContainer.encodeIfPresent(customObject, forKey: .customObject)
+		try mainContainer.encodeIfPresent(text, forKey: .text)
+		try mainContainer.encodeIfPresent(type, forKey: .type)
+		try mainContainer.encodeIfPresent(name, forKey: .name)
+		try mainContainer.encodeIfPresent(description, forKey: .description)
+	}
 }
