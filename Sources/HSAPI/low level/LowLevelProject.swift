@@ -3,7 +3,7 @@ import Foundation
 /// An object representing as close to the raw json of a Hopscotch project as we get
 struct LowLevelProject {
 	var baseObjectScale: Double?
-	var editedAt: Date?
+	var editedAt: String?
 	var fontSize: Double?
 	var playerUpgrades: [LowLevelPlayerUpgrade]?
 	var playerVersion: String?
@@ -57,9 +57,7 @@ extension LowLevelProject: Codable {
 						extraData[key.stringValue] = try container.decode(JSONType.self, forKey: key)
 					}
 				case .editedAt:
-					if let editedAt = try? container.decode(Date.self, forKey: key) {
-						self.editedAt = editedAt
-					} else if let editedAtString = try? container.decode(String.self, forKey: key), let editedAt = HSDateFormatter.singleton.date(from: editedAtString) { // Silly hack because Hopscotch produces slightly nonstandard dates, for some reason
+					if let editedAt = try? container.decode(String.self, forKey: key) {
 						self.editedAt = editedAt
 					} else {
 						extraData[key.stringValue] = try container.decode(JSONType.self, forKey: key)

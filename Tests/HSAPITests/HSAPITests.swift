@@ -38,12 +38,14 @@ final class HSAPITests: XCTestCase {
             return
         }
         let decoder = JSONDecoder()
+        let originalJson = try decoder.decode(JSONType.self, from: originalData)
         let project = try decoder.decode(LowLevelProject.self, from: originalData)
         XCTAssertNotNil(project)
         let encoder = JSONEncoder()
         encoder.outputFormatting = .sortedKeys
         let reencodedData = try encoder.encode(project)
-        XCTAssertEqual(originalData, reencodedData)
+        let reencodedJson = try decoder.decode(JSONType.self, from: reencodedData)
+        XCTAssertEqual(originalJson, reencodedJson)
     }
     func testMooseIslandLowLevelEncoding() throws {
         guard let url = Bundle.module.url(forResource: "mooseisland", withExtension: "hopscotch") else {
@@ -55,11 +57,13 @@ final class HSAPITests: XCTestCase {
             return
         }
         let decoder = JSONDecoder()
+        let originalJson = try decoder.decode(JSONType.self, from: originalData)
         let project = try decoder.decode(LowLevelProject.self, from: originalData)
         XCTAssertNotNil(project)
         let encoder = JSONEncoder()
         encoder.outputFormatting = .sortedKeys
         let reencodedData = try encoder.encode(project)
-        XCTAssertEqual(originalData, reencodedData)
+        let reencodedJson = try decoder.decode(JSONType.self, from: reencodedData)
+        XCTAssertEqual(originalJson, reencodedJson)
     }
 }

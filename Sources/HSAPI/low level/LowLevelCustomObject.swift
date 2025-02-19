@@ -1,13 +1,12 @@
 import Foundation
 
 struct LowLevelCustomObject {
-	// TODO: Date? Or should this low level object be strings, and it is parsed to dates later on?
-	var createdDate: Date?
+	var createdDate: String?
 	var fileName: String?
 	var id: String?
 	var name: String?
 	var size: LowLevelStageSize? //FIXME: What is this *ACTUALLY* supposed to be?
-	var updatedDate: Date?
+	var updatedDate: String?
 
 	var extraData = [String: JSONType?]()
 }
@@ -28,9 +27,7 @@ extension LowLevelCustomObject: Codable {
             if let knownKey = CodingKeys(stringValue: key.stringValue) { 
                 switch knownKey {
 				case .createdDate: 
-					if let createdDate = try? container.decode(Date.self, forKey: key) {
-						self.createdDate = createdDate
-					} else if let createdDateString = try? container.decode(String.self, forKey: key), let createdDate = HSDateFormatter.singleton.date(from: createdDateString) { // Silly hack because Hopscotch produces slightly nonstandard dates, for some reason
+					if let createdDate = try? container.decode(String.self, forKey: key) {
 						self.createdDate = createdDate
 					} else {
 						extraData[key.stringValue] = try container.decode(JSONType.self, forKey: key)
@@ -60,9 +57,7 @@ extension LowLevelCustomObject: Codable {
 						extraData[key.stringValue] = try container.decode(JSONType.self, forKey: key)
 					}
 				case .updatedDate: 
-					if let updatedDate = try? container.decode(Date.self, forKey: key) {
-						self.updatedDate = updatedDate
-					} else if let updatedDateString = try? container.decode(String.self, forKey: key), let updatedDate = HSDateFormatter.singleton.date(from: updatedDateString) { // Silly hack because Hopscotch produces slightly nonstandard dates, for some reason
+					if let updatedDate = try? container.decode(String.self, forKey: key) {
 						self.updatedDate = updatedDate
 					} else {
 						extraData[key.stringValue] = try container.decode(JSONType.self, forKey: key)
@@ -82,7 +77,6 @@ extension LowLevelCustomObject: Codable {
 			try extraDataContainer.encode(value, forKey: ArbitraryStringCodingKeys(stringValue: key))
 		}
 		var mainContainer = encoder.container(keyedBy: CodingKeys.self)
-		// TODO: Should we imitate the app's encoding behavior here?
 		if let createdDate {
 			try mainContainer.encodeIfPresent(createdDate, forKey: .createdDate)
 		}
