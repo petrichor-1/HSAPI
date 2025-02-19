@@ -2,21 +2,20 @@ enum LowLevelParameterDatum {
 	// TODO: Confirm that this is all reasonable types
 	case block(LowLevelBlock)
 	case trait(LowLevelTrait)
+	// TODO: Merge this into nonLocalVariable into single variableReference case!
 	case localVariable(LowLevelVariable)
 	/// Character for set image. Will ALWAYS be read for set image parameter types, matching webplayer functionality
 	case setImage(LowLevelSetImageDatum)
 	case sceneReference(LowLevelSceneReference)
-	// TODO: Add extraData to this!
-	case nonLocalVariable(id: String)
+	case nonLocalVariable(LowLevelVariableReference)
 }
 
 extension LowLevelParameterDatum: Codable {
 	init(from decoder: Decoder) throws {
 		// TODO: Is this order correct?
 		if let container = try? decoder.container(keyedBy: ArbitraryStringCodingKeys.self) {
-			if let variableId = try? container.decode(String.self, forKey: ArbitraryStringCodingKeys(stringValue: "variable")) {
-				// FIXME: This should have `extraData`!!!!
-				self = .nonLocalVariable(id: variableId)
+			if let _ = try? container.decode(String.self, forKey: ArbitraryStringCodingKeys(stringValue: "variable")) {
+				self = .nonLocalVariable(try LowLevelVariableReference(from: decoder))
 				return
 			}
 			// TODO: Use known block types
@@ -52,9 +51,8 @@ extension LowLevelParameterDatum: Codable {
 			try datum.encode(to: encoder)
 		case let .sceneReference(sceneReference):
 			try sceneReference.encode(to: encoder)
-		case let .nonLocalVariable(id: id):
-			var container = encoder.container(keyedBy: ArbitraryStringCodingKeys.self)
-			try container.encode(id, forKey: ArbitraryStringCodingKeys(stringValue: "variable"))
+		case let .nonLocalVariable(variable):
+			try variable.encode(to: encoder)
 		}
 	}
 }
