@@ -1,11 +1,26 @@
 struct LowLevelParameter {
+	///The default value of the parameter
+	/// In the iOS editor, it is the grey text that shows up if you remove any actual value from it
 	var defaultValue: String?
+	///The actual value of the parameter
+	/// This will be ignored if there is a `datum`
 	var value: String?
+	///The label for this parameter
+	/// This actually shows up in the editor just to the left of the parameter
+	/// (i.e. the "=" in an equals operator, or the "to" in a set variable block, or the "x" and "y" in a set position block)
 	var key: String?
+	///The parameter type
 	var type: Double?
+	///A variable id
+	/// This is usally absent.
+	/// The iOS editor only seems to add it in rules to reference eventParameters
+	/// In the webplayer, if `datum` is falsy, and `variable` is not, the player will first search for a variable with this id. If it does not find one, it will then check for a trait. If there is no trait with this id either, then it will search for an eventParameter. Once it finds one, it will use it as the value of the parameter.
 	var variable: String?
+	///A child block
+	/// if this is present, `value` will not be the actual value used, instead the computed value of the contents of `datum`.
 	var datum: LowLevelParameterDatum?
 
+	/// Extra data. Will be overwritten by values in full regular properties when jsonified, if applicable
 	var extraData = [String: JSONType]()
 }
 

@@ -2,25 +2,49 @@ import Foundation
 
 /// An object representing as close to the raw json of a Hopscotch project as we get
 struct LowLevelProject {
+	///Scales character SVGs by a factor of its value. Does not scale shapes or text.
+	/// In any versioned webplayer, it is ignored and a value of `0.5` is assumed for *shapes* accesible from editor, and `1` for all other characters
 	var baseObjectScale: Double?
+	/// TODO: remove this? At least until other community-based attributes are included
 	var editedAt: String?
+	///Scales the text size.
+	/// Default for standard iPads is `80`, iPhones are `72`
 	var fontSize: Double?
+	///A list of upgrades to the player.
+	/// Can be omitted
 	var playerUpgrades: [LowLevelPlayerUpgrade]?
+	///The current player version, using semantic versioning.
 	var playerVersion: String?
+	///Whether advanced mode is required for this project.
+	/// (When advanced mode was first added, it was called the beta editor)
 	var requiresBetaEditor: Bool?
+	///The size of the stage
+	/// TODO: List known defaults?
 	var stageSize: LowLevelStageSize?
+	///A representation of the app version that created this project
+	/// If it is greater than the version of the iOS app the user is using, it will show an error screen and the message
+	/// Someone made this with a newer version of Hopscotch. Update now to see the new awesomeness!
+	/// If it is <= 24, the iOS app will use the native player for it.
+	///TODO: Change this to double
 	var version: Int?
 	var abilities: [LowLevelAbility]?
 	var customObjects: [LowLevelCustomObject]?
 	var customRuleInstances: [LowLevelCustomRuleInstance]?
+	///TODO: Better documentation for this
 	var eventParameters: [LowLevelEventParameter]?
 	var rules: [LowLevelRule]?
 	var scenes: [LowLevelScene]?
+	///TODO: Better documentation
+	///FIXME: "sceneReference"? And this works? what
 	var sceneReference: [LowLevelSceneReference]?
+	///An array of traits.
+	/// The iOS editor puts copies of all traits in the project here.
+	/// The webplayer does not use this.
 	var traits: [LowLevelTrait]?
 	var variables: [LowLevelVariable]?
 	//TODO: Community-based attributes
 
+	/// Extra data. Will be overwritten by values in full regular properties when jsonified, if applicable
 	var extraData = [String: JSONType]()
 }
 

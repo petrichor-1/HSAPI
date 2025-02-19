@@ -1,7 +1,12 @@
+///A reference to a variable, used in parameter datums
 struct LowLevelVariableReference {
+	///The id of the variable being referenced
 	var variable: String?
+	///The type of the variable being referenced
+	///If this doesn't match the expected type of the variable, the iOS app's editor will change it, but the player will understand it just fine.
 	var type: Double?
 
+	/// Extra data. Will be overwritten by values in full regular properties when jsonified, if applicable
 	var extraData = [String: JSONType]()
 }
 

@@ -1,4 +1,7 @@
+///The contents of the `datum` field of a parameter in a set image block.
+///This will only be parsed by the webplayer if it is in the proper parameter type.
 struct LowLevelSetImageDatum {
+	//TODO: More documentation
 	var customObject: String?
 	/// Will have higher priority than `type` in webplayer parsing
 	var text: String?
@@ -8,6 +11,7 @@ struct LowLevelSetImageDatum {
 	/// Usually empty string
 	var description: String?
 
+	/// Extra data. Will be overwritten by values in full regular properties when jsonified, if applicable
 	var extraData = [String: JSONType]()
 }
 

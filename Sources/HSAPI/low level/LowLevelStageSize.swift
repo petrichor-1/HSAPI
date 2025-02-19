@@ -3,6 +3,7 @@ struct LowLevelStageSize {
 	var width: Double?
 	var height: Double?
 
+	/// Extra data. Will be overwritten by values in full regular properties when jsonified, if applicable
 	var extraData = [String: JSONType]()
 }
 

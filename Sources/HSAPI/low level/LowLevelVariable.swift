@@ -1,8 +1,14 @@
+///A variable definition
 struct LowLevelVariable {
+	///The name of the variable
+	/// Duplicate names are fine as long as it is not a local variable
 	var name: String?
+	///The id of the variable ("objectIdString")
 	var id: String?
+	/// The type of the variable
 	var type: Double?
 	/// Only on local variables
+	/// TODO: Remove this, local variables should use LowLevelVariableReference
 	var description: String?
 
 	/// Extra data. Will be overwritten by values in full regular properties when jsonified, if applicable

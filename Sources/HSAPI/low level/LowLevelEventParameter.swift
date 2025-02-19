@@ -1,9 +1,19 @@
+///Used in events to refer to objects
+/// For example, in `When (Self) is tapped`, the `Self` is referenced using an event parameter.
 struct LowLevelEventParameter {
+	///The type of the event parameter
+	/// TODO: Elaborate further
 	var blockType: Double?
+	///A string describing the type of the event parameter
+	/// Can be omitted
 	var description: String?
+	///A unique id for this event parameter.
 	var id: String?
+	///The object id of the object referenced.
+	/// Only present for references to objects, `blockType` 8000
 	var objectID: String?
 
+	/// Extra data. Will be overwritten by values in full regular properties when jsonified, if applicable
 	var extraData = [String: JSONType]()
 }
 

@@ -1,11 +1,26 @@
+///The definition of a rule
 struct LowLevelRule {
+	///The id of the ability this rule contains
 	var abilityID: String?
+	///The unique id of the ability
+	/// Must also not be the same as any custom rule instances
 	var id: String?
+	/// TODO: Figure out what this does
+	/// Often empty string
 	var objectID: String?
+	///TODO: Figure out what this does
+	/// often empty string
+	/// Unused in webplayer
+	/// Can be absent without issue
 	var name: String?
+	///The parameters for this rule
+	/// TODO: Elaborate more
 	var parameters: [LowLevelParameter]?
+	///The type of the block in this rule
+	/// TODO: Change the name of this in HSAPI?
 	var ruleBlockType: Double?
 
+	/// Extra data. Will be overwritten by values in full regular properties when jsonified, if applicable
 	var extraData = [String: JSONType]()
 }
 

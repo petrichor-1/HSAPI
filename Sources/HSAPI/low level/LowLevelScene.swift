@@ -1,9 +1,15 @@
+///The structure used to define a scene.
 struct LowLevelScene {
+	///The filename of the thumbnail for the scene in the scene selector
 	var filename: String?
+	///The name of the scene
 	var name: String?
+	///The unique id of the scene
 	var id: String?
+	///A list of object ids referencing the objects in the scene
 	var objects: [String]?
 
+	/// Extra data. Will be overwritten by values in full regular properties when jsonified, if applicable
 	var extraData = [String: JSONType]()
 }
 

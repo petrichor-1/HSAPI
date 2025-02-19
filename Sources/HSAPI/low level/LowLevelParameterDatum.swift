@@ -1,11 +1,16 @@
+///A "child block" of a parameter.
 enum LowLevelParameterDatum {
 	// TODO: Confirm that this is all reasonable types
+	///An actual operator block
 	case block(LowLevelBlock)
+	///A trait
+	/// (i.e. x position)
 	case trait(LowLevelTrait)
 	// TODO: Merge this into nonLocalVariable into single variableReference case!
 	case localVariable(LowLevelVariable)
 	/// Character for set image. Will ALWAYS be read for set image parameter types, matching webplayer functionality
 	case setImage(LowLevelSetImageDatum)
+	///TODO: better documentation here
 	case sceneReference(LowLevelSceneReference)
 	case nonLocalVariable(LowLevelVariableReference)
 }

@@ -1,8 +1,13 @@
+///Post-webplayer 2.0.0, custom rule instances are used to refer to custom rules. In earlier projects, the custom rules were directly referred to.
 struct LowLevelCustomRuleInstance {
+	///The id of the custom rule that is referenced
 	var customRuleId: String?
+	///The unique id of this custom rule instance
 	var id: String?
+	///The parameters passed to the custom rule in this instance
 	var parameters: [LowLevelParameter]?
 
+	/// Extra data. Will be overwritten by values in full regular properties when jsonified, if applicable
 	var extraData = [String: JSONType]()
 }
 

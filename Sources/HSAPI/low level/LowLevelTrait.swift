@@ -1,10 +1,21 @@
+///A trait. Used in parameter datums and the top level of a project
 struct LowLevelTrait {
+	///A string description of the type of the trait. Not used by anything
 	var description: String?
+	///The unique id of this trait.
+	/// TODO: What does this do?
 	var traitID: String?
+	///The ID of the object that this trait references
+	/// (i.e.) if this trait is the x position of object "Jeff", `objectID` will be the objectID of object "Jeff"
 	var objectID: String?
+	///TODO: Figure out what the heck this even means
+	/// In the player, it is only used to check if it “uses original object”. 
+	///    It is considered to do so if either `type` is `HSBlockType.OriginalObject` or if `objectParameterType` is `HSBlockType.OriginalObject`
 	var objectParameterType: Double?
+	///The type of the trait
 	var type: Double?
 
+	/// Extra data. Will be overwritten by values in full regular properties when jsonified, if applicable
 	var extraData = [String: JSONType]()
 }
 

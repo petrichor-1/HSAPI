@@ -1,22 +1,42 @@
 /// Represents the raw json of a block
 struct LowLevelBlock {
+	///The class of block
+	/// TODO: Explain effects of this being incorrect in the iOS editor
+	/// Usually "method" for normal blocks, "control" for e.g. repeat, "conditionalControl" for conditional blocks like check once if, "conditionalOperator" for comparison operators like `>`, `<`, `and`, etc., "operator" for other operators
+	/// The webplayer ignores this
 	var blockClass: String?
+	///The name of the block type
+	/// Not displayed anywhere
+	/// Can be omitted
 	var description: String?
+	///Added by the new hopscotch.fun web editor.
+	/// TODO: Elaborate more
 	var keyboardName: String?
+	///The block type
 	var type: Double?
+	/// The parameters for this block
 	/// Note that this MAY in some cases decode differently to Hopscotch. Do not rely on this
 	/// decoded value for anything important unless you confirm that `extraData` does not have
 	/// anything with the key "params" or "parameters" that contradicts this decoded value
 	var parameters: [LowLevelParameter]?
+	///The controlScript used for any sub-abilities, except for `else` in check if else blocks.
 	var controlScript: LowLevelControlScript?
+	///The controlScript for the `else` part of `check_if_else` blocks.
 	var controlFalseScript: LowLevelControlScript?
 	
+	///Which key is used for parameters?
+	/// The webplayer will understand both in all situations
+	/// TODO: Will the editor?
+	/// .parameters for method blocks, .params for operator blocks
 	var parameterKey: ParameterKey?
 
+	/// Extra data. Will be overwritten by values in full regular properties when jsonified, if applicable
 	var extraData = [String: JSONType]()
 
 	enum ParameterKey {
+		/// Used for method blocks in abilities
 		case parameters
+		/// Used for operator blocks in parameters
 		case params
 	}
 }

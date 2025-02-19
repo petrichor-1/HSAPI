@@ -1,6 +1,9 @@
+///How blocks refer to other abilities
 struct LowLevelControlScript {
+	///The id of the ability that is referred to
 	var abilityID: String?
 
+	/// Extra data. Will be overwritten by values in full regular properties when jsonified, if applicable
 	var extraData = [String: JSONType]()
 }
 

@@ -1,11 +1,23 @@
 /// Represents the raw json of an ability
 struct LowLevelAbility {
+	/// The unique id of this ability.
 	var abilityID: String?
+	///The blocks inside this ability
 	var blocks: [LowLevelBlock]?
+	///The time this ability was created
+	/// Used to sort the custom blocks keyboard
+	/// Number of seconds since 2001-01-01 at midnight UTC, with 6 decimal points of precision.
 	var createdAt: Double?
+	///The name of a custom block containing this ability.
+	/// *only* present on custom blocks, this is what determines whether this ability shows up as a custom block in the custom block keyboard.
+	/// will not show in keyboard as custom block if it is an empty string
+	/// Duplicate names work fine
 	var name: String?
+	///The parameters that this custom block accepts, if it is a custom block
+	/// TODO: Elaborate more
 	var parameters: [LowLevelParameter]?
 
+	/// Extra data. Will be overwritten by values in full regular properties when jsonified, if applicable
 	var extraData = [String: JSONType]()
 }
 

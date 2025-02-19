@@ -1,13 +1,22 @@
 import Foundation
 
+///Used to store information about the types of custom images available in the project.
+/// Even in published projects, timestamps here contain the timezone information
 struct LowLevelCustomObject {
+	///When the image was added to the project
 	var createdDate: String?
+	///The filename of the image
 	var fileName: String?
+	///A unique id for this custom object
 	var id: String?
+	///The name of this image
 	var name: String?
+	///The dimensions of the image
 	var size: LowLevelStageSize? //FIXME: What is this *ACTUALLY* supposed to be?
+	///When the image was updated
 	var updatedDate: String?
 
+	/// Extra data. Will be overwritten by values in full regular properties when jsonified, if applicable
 	var extraData = [String: JSONType?]()
 }
 
