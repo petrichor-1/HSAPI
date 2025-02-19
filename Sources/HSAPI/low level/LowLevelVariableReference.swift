@@ -43,7 +43,11 @@ extension LowLevelVariableReference: Codable {
 			try extraDataContainer.encode(value, forKey: ArbitraryStringCodingKeys(stringValue: key))
 		}
 		var mainContainer = encoder.container(keyedBy: CodingKeys.self)
-		try mainContainer.encodeIfPresent(variable, forKey: .variable)
-		try mainContainer.encodeIfPresent(type, forKey: .type)
+		if let variable {
+			try mainContainer.encodeIfPresent(variable, forKey: .variable)
+		}
+		if let type {
+			try mainContainer.encodeIfPresent(type, forKey: .type)
+		}
 	}
 }

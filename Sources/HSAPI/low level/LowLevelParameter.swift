@@ -80,11 +80,23 @@ extension LowLevelParameter: Codable {
 			try extraDataContainer.encode(value, forKey: ArbitraryStringCodingKeys(stringValue: key))
 		}
 		var mainContainer = encoder.container(keyedBy: CodingKeys.self)
-		try mainContainer.encodeIfPresent(defaultValue, forKey: .defaultValue)
-		try mainContainer.encodeIfPresent(value, forKey: .value)
-		try mainContainer.encodeIfPresent(key, forKey: .key)
-		try mainContainer.encodeIfPresent(type, forKey: .type)
-		try mainContainer.encodeIfPresent(variable, forKey: .variable)
-		try mainContainer.encodeIfPresent(datum, forKey: .datum)
+		if let defaultValue {
+			try mainContainer.encodeIfPresent(defaultValue, forKey: .defaultValue)
+		}
+		if let value {
+			try mainContainer.encodeIfPresent(value, forKey: .value)
+		}
+		if let key {
+			try mainContainer.encodeIfPresent(key, forKey: .key)
+		}
+		if let type {
+			try mainContainer.encodeIfPresent(type, forKey: .type)
+		}
+		if let variable {
+			try mainContainer.encodeIfPresent(variable, forKey: .variable)
+		}
+		if let datum {
+			try mainContainer.encodeIfPresent(datum, forKey: .datum)
+		}
 	}
 }

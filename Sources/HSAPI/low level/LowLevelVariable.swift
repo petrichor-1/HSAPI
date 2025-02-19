@@ -61,9 +61,17 @@ extension LowLevelVariable: Codable {
 			try extraDataContainer.encode(value, forKey: ArbitraryStringCodingKeys(stringValue: key))
 		}
 		var mainContainer = encoder.container(keyedBy: CodingKeys.self)
-		try mainContainer.encodeIfPresent(name, forKey: .name)
-		try mainContainer.encodeIfPresent(id, forKey: .id)
-		try mainContainer.encodeIfPresent(type, forKey: .type)
-		try mainContainer.encodeIfPresent(description, forKey: .description)
+		if let name {
+			try mainContainer.encodeIfPresent(name, forKey: .name)
+		}
+		if let id {
+			try mainContainer.encodeIfPresent(id, forKey: .id)
+		}
+		if let type {
+			try mainContainer.encodeIfPresent(type, forKey: .type)
+		}
+		if let description {
+			try mainContainer.encodeIfPresent(description, forKey: .description)
+		}
 	}
 }

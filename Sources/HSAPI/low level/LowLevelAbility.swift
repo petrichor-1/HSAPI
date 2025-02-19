@@ -68,10 +68,20 @@ extension LowLevelAbility: Codable {
 			try extraDataContainer.encode(value, forKey: ArbitraryStringCodingKeys(stringValue: key))
 		}
 		var mainContainer = encoder.container(keyedBy: CodingKeys.self)
-		try mainContainer.encode(abilityID, forKey: .abilityID)
-		try mainContainer.encode(blocks, forKey: .blocks)
-		try mainContainer.encode(createdAt, forKey: .createdAt)
-		try mainContainer.encode(name, forKey: .name)
-		try mainContainer.encode(parameters, forKey: .parameters)
+		if let abilityID {
+			try mainContainer.encode(abilityID, forKey: .abilityID)
+		}
+		if let blocks {
+			try mainContainer.encode(blocks, forKey: .blocks)
+		}
+		if let createdAt {
+			try mainContainer.encode(createdAt, forKey: .createdAt)
+		}
+		if let name {
+			try mainContainer.encode(name, forKey: .name)
+		}
+		if let parameters {
+			try mainContainer.encode(parameters, forKey: .parameters)
+		}
 	}
 }

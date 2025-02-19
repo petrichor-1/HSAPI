@@ -44,7 +44,11 @@ extension LowLevelStageSize: Codable {
 			try extraDataContainer.encode(value, forKey: ArbitraryStringCodingKeys(stringValue: key))
 		}
 		var mainContainer = encoder.container(keyedBy: CodingKeys.self)
-		try mainContainer.encodeIfPresent(width, forKey: .width)
-		try mainContainer.encodeIfPresent(height, forKey: .height)
+		if let width {
+			try mainContainer.encodeIfPresent(width, forKey: .width)
+		}
+		if let height {
+			try mainContainer.encodeIfPresent(height, forKey: .height)
+		}
 	}
 }

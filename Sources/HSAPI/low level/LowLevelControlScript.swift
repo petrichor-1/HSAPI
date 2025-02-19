@@ -35,6 +35,8 @@ extension LowLevelControlScript: Codable {
 			try extraDataContainer.encode(value, forKey: ArbitraryStringCodingKeys(stringValue: key))
 		}
 		var mainContainer = encoder.container(keyedBy: CodingKeys.self)
-		try mainContainer.encodeIfPresent(abilityID, forKey: .abilityID)
+		if let abilityID {
+			try mainContainer.encodeIfPresent(abilityID, forKey: .abilityID)
+		}
 	}
 }

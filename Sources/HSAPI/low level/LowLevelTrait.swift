@@ -67,10 +67,20 @@ extension LowLevelTrait: Codable {
 			try extraDataContainer.encode(value, forKey: ArbitraryStringCodingKeys(stringValue: key))
 		}
 		var mainContainer = encoder.container(keyedBy: CodingKeys.self)
-		try mainContainer.encodeIfPresent(description, forKey: .description)
-		try mainContainer.encodeIfPresent(traitID, forKey: .traitID)
-		try mainContainer.encodeIfPresent(objectID, forKey: .objectID)
-		try mainContainer.encodeIfPresent(objectParameterType, forKey: .objectParameterType)
-		try mainContainer.encodeIfPresent(type, forKey: .type)
+		if let description {
+			try mainContainer.encodeIfPresent(description, forKey: .description)
+		}
+		if let traitID {
+			try mainContainer.encodeIfPresent(traitID, forKey: .traitID)
+		}
+		if let objectID {
+			try mainContainer.encodeIfPresent(objectID, forKey: .objectID)
+		}
+		if let objectParameterType {
+			try mainContainer.encodeIfPresent(objectParameterType, forKey: .objectParameterType)
+		}
+		if let type {
+			try mainContainer.encodeIfPresent(type, forKey: .type)
+		}
 	}
 }

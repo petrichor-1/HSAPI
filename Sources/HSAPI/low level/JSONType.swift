@@ -1,4 +1,4 @@
-enum JSONType: Codable {
+enum JSONType: Codable, Equatable {
     case string(String)
     case number(Double)
     case boolean(Bool)

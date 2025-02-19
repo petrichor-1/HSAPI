@@ -111,12 +111,24 @@ extension LowLevelBlock: Codable {
 			try extraDataContainer.encode(value, forKey: ArbitraryStringCodingKeys(stringValue: key))
 		}
 		var mainContainer = encoder.container(keyedBy: CodingKeys.self)
-		try mainContainer.encodeIfPresent(blockClass, forKey: .blockClass)
-		try mainContainer.encodeIfPresent(description, forKey: .description)
-		try mainContainer.encodeIfPresent(keyboardName, forKey: .keyboardName)
-		try mainContainer.encodeIfPresent(type, forKey: .type)
-		try mainContainer.encodeIfPresent(controlScript, forKey: .controlScript)
-		try mainContainer.encodeIfPresent(controlFalseScript, forKey: .controlFalseScript)
+		if let blockClass {
+			try mainContainer.encodeIfPresent(blockClass, forKey: .blockClass)
+		}
+		if let description {
+			try mainContainer.encodeIfPresent(description, forKey: .description)
+		}
+		if let keyboardName {
+			try mainContainer.encodeIfPresent(keyboardName, forKey: .keyboardName)
+		}
+		if let type {
+			try mainContainer.encodeIfPresent(type, forKey: .type)
+		}
+		if let controlScript {
+			try mainContainer.encodeIfPresent(controlScript, forKey: .controlScript)
+		}
+		if let controlFalseScript {
+			try mainContainer.encodeIfPresent(controlFalseScript, forKey: .controlFalseScript)
+		}
 		if let parameters {
 			// Arbitrary choice of default parameter key. There shouldn't really be a situation where one is set without the other caused by HSAPI code,
 			//           but if the user directly deals with low level objects that could happen. In that case, assume that they don't mind whatever we pick :)

@@ -51,8 +51,14 @@ extension LowLevelCustomRuleInstance: Codable {
 			try extraDataContainer.encode(value, forKey: ArbitraryStringCodingKeys(stringValue: key))
 		}
 		var mainContainer = encoder.container(keyedBy: CodingKeys.self)
-		try mainContainer.encodeIfPresent(customRuleId, forKey: .customRuleId)
-		try mainContainer.encodeIfPresent(id, forKey: .id)
-		try mainContainer.encodeIfPresent(parameters, forKey: .parameters)
+		if let customRuleId {
+			try mainContainer.encodeIfPresent(customRuleId, forKey: .customRuleId)
+		}
+		if let id {
+			try mainContainer.encodeIfPresent(id, forKey: .id)
+		}
+		if let parameters {
+			try mainContainer.encodeIfPresent(parameters, forKey: .parameters)
+		}
 	}
 }

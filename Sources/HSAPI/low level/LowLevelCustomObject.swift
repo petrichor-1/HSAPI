@@ -83,12 +83,24 @@ extension LowLevelCustomObject: Codable {
 		}
 		var mainContainer = encoder.container(keyedBy: CodingKeys.self)
 		// TODO: Should we imitate the app's encoding behavior here?
-		try mainContainer.encodeIfPresent(createdDate, forKey: .createdDate)
-		try mainContainer.encodeIfPresent(fileName, forKey: .fileName)
-		try mainContainer.encodeIfPresent(id, forKey: .id)
-		try mainContainer.encodeIfPresent(name, forKey: .name)
-		try mainContainer.encodeIfPresent(size, forKey: .size)
+		if let createdDate {
+			try mainContainer.encodeIfPresent(createdDate, forKey: .createdDate)
+		}
+		if let fileName {
+			try mainContainer.encodeIfPresent(fileName, forKey: .fileName)
+		}
+		if let id {
+			try mainContainer.encodeIfPresent(id, forKey: .id)
+		}
+		if let name {
+			try mainContainer.encodeIfPresent(name, forKey: .name)
+		}
+		if let size {
+			try mainContainer.encodeIfPresent(size, forKey: .size)
+		}
 		// TODO: Should we imitate the app's encoding behavior here?
-		try mainContainer.encodeIfPresent(updatedDate, forKey: .updatedDate)
+		if let updatedDate {
+			try mainContainer.encodeIfPresent(updatedDate, forKey: .updatedDate)
+		}
 	}
 }

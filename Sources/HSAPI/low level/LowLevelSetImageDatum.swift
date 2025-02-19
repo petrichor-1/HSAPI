@@ -70,10 +70,20 @@ extension LowLevelSetImageDatum: Codable {
 			try extraDataContainer.encode(value, forKey: ArbitraryStringCodingKeys(stringValue: key))
 		}
 		var mainContainer = encoder.container(keyedBy: CodingKeys.self)
-		try mainContainer.encodeIfPresent(customObject, forKey: .customObject)
-		try mainContainer.encodeIfPresent(text, forKey: .text)
-		try mainContainer.encodeIfPresent(type, forKey: .type)
-		try mainContainer.encodeIfPresent(name, forKey: .name)
-		try mainContainer.encodeIfPresent(description, forKey: .description)
+		if let customObject {
+			try mainContainer.encodeIfPresent(customObject, forKey: .customObject)
+		}
+		if let text {
+			try mainContainer.encodeIfPresent(text, forKey: .text)
+		}
+		if let type {
+			try mainContainer.encodeIfPresent(type, forKey: .type)
+		}
+		if let name {
+			try mainContainer.encodeIfPresent(name, forKey: .name)
+		}
+		if let description {
+			try mainContainer.encodeIfPresent(description, forKey: .description)
+		}
 	}
 }

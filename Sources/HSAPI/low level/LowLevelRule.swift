@@ -75,11 +75,23 @@ extension LowLevelRule: Codable {
 			try extraDataContainer.encode(value, forKey: ArbitraryStringCodingKeys(stringValue: key))
 		}
 		var mainContainer = encoder.container(keyedBy: CodingKeys.self)
-		try mainContainer.encodeIfPresent(abilityID, forKey: .abilityID)
-		try mainContainer.encodeIfPresent(id, forKey: .id)
-		try mainContainer.encodeIfPresent(objectID, forKey: .objectID)
-		try mainContainer.encodeIfPresent(name, forKey: .name)
-		try mainContainer.encodeIfPresent(parameters, forKey: .parameters)
-		try mainContainer.encodeIfPresent(ruleBlockType, forKey: .ruleBlockType)
+		if let abilityID {
+			try mainContainer.encodeIfPresent(abilityID, forKey: .abilityID)
+		}
+		if let id {
+			try mainContainer.encodeIfPresent(id, forKey: .id)
+		}
+		if let objectID {
+			try mainContainer.encodeIfPresent(objectID, forKey: .objectID)
+		}
+		if let name {
+			try mainContainer.encodeIfPresent(name, forKey: .name)
+		}
+		if let parameters {
+			try mainContainer.encodeIfPresent(parameters, forKey: .parameters)
+		}
+		if let ruleBlockType {
+			try mainContainer.encodeIfPresent(ruleBlockType, forKey: .ruleBlockType)
+		}
 	}
 }

@@ -59,9 +59,17 @@ extension LowLevelSceneReference: Codable {
 			try extraDataContainer.encode(value, forKey: ArbitraryStringCodingKeys(stringValue: key))
 		}
 		var mainContainer = encoder.container(keyedBy: CodingKeys.self)
-		try mainContainer.encodeIfPresent(id, forKey: .id)
-		try mainContainer.encodeIfPresent(blockType, forKey: .blockType)
-		try mainContainer.encodeIfPresent(description, forKey: .description)
-		try mainContainer.encodeIfPresent(scene, forKey: .scene)
+		if let id {
+			try mainContainer.encodeIfPresent(id, forKey: .id)
+		}
+		if let blockType {
+			try mainContainer.encodeIfPresent(blockType, forKey: .blockType)
+		}
+		if let description {
+			try mainContainer.encodeIfPresent(description, forKey: .description)
+		}
+		if let scene {
+			try mainContainer.encodeIfPresent(scene, forKey: .scene)
+		}
 	}
 }

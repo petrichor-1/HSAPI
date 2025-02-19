@@ -59,9 +59,17 @@ extension LowLevelScene: Codable {
 			try extraDataContainer.encode(value, forKey: ArbitraryStringCodingKeys(stringValue: key))
 		}
 		var mainContainer = encoder.container(keyedBy: CodingKeys.self)
-		try mainContainer.encodeIfPresent(filename, forKey: .filename)
-		try mainContainer.encodeIfPresent(name, forKey: .name)
-		try mainContainer.encodeIfPresent(id, forKey: .id)
-		try mainContainer.encodeIfPresent(objects, forKey: .objects)
+		if let filename {
+			try mainContainer.encodeIfPresent(filename, forKey: .filename)
+		}
+		if let name {
+			try mainContainer.encodeIfPresent(name, forKey: .name)
+		}
+		if let id {
+			try mainContainer.encodeIfPresent(id, forKey: .id)
+		}
+		if let objects {
+			try mainContainer.encodeIfPresent(objects, forKey: .objects)
+		}
 	}
 }

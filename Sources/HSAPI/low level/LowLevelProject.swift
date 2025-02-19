@@ -174,23 +174,55 @@ extension LowLevelProject: Codable {
 			try extraDataContainer.encode(value, forKey: ArbitraryStringCodingKeys(stringValue: key))
 		}
 		var mainContainer = encoder.container(keyedBy: CodingKeys.self)
-		try mainContainer.encodeIfPresent(baseObjectScale, forKey: .baseObjectScale)
+		if let baseObjectScale {
+			try mainContainer.encode(baseObjectScale, forKey: .baseObjectScale)
+		}
 		//TODO: Should this match the app's behavior?
-		try mainContainer.encodeIfPresent(editedAt, forKey: .editedAt)
-		try mainContainer.encodeIfPresent(fontSize, forKey: .fontSize)
-		try mainContainer.encodeIfPresent(playerVersion, forKey: .playerVersion)
-		try mainContainer.encodeIfPresent(requiresBetaEditor, forKey: .requiresBetaEditor)
-		try mainContainer.encodeIfPresent(stageSize, forKey: .stageSize)
-		try mainContainer.encodeIfPresent(version, forKey: .version)
-		try mainContainer.encodeIfPresent(abilities, forKey: .abilities)
-		try mainContainer.encodeIfPresent(customObjects, forKey: .customObjects)
-		try mainContainer.encodeIfPresent(customRuleInstances, forKey: .customRuleInstances)
-		try mainContainer.encodeIfPresent(eventParameters, forKey: .eventParameters)
-		try mainContainer.encodeIfPresent(rules, forKey: .rules)
-		try mainContainer.encodeIfPresent(scenes, forKey: .scenes)
-		try mainContainer.encodeIfPresent(sceneReference, forKey: .sceneReference)
-		try mainContainer.encodeIfPresent(traits, forKey: .traits)
-		try mainContainer.encodeIfPresent(variables, forKey: .variables)
+		if let editedAt {
+			try mainContainer.encode(editedAt, forKey: .editedAt)
+		}
+		if let fontSize {
+			try mainContainer.encode(fontSize, forKey: .fontSize)
+		}
+		if let playerVersion {
+			try mainContainer.encode(playerVersion, forKey: .playerVersion)
+		}
+		if let requiresBetaEditor {
+			try mainContainer.encode(requiresBetaEditor, forKey: .requiresBetaEditor)
+		}
+		if let stageSize {
+			try mainContainer.encode(stageSize, forKey: .stageSize)
+		}
+		if let version {
+			try mainContainer.encode(version, forKey: .version)
+		}
+		if let abilities {
+			try mainContainer.encode(abilities, forKey: .abilities)
+		}
+		if let customObjects {
+			try mainContainer.encode(customObjects, forKey: .customObjects)
+		}
+		if let customRuleInstances {
+			try mainContainer.encode(customRuleInstances, forKey: .customRuleInstances)
+		}
+		if let eventParameters {
+			try mainContainer.encode(eventParameters, forKey: .eventParameters)
+		}
+		if let rules {
+			try mainContainer.encode(rules, forKey: .rules)
+		}
+		if let scenes {
+			try mainContainer.encode(scenes, forKey: .scenes)
+		}
+		if let sceneReference {
+			try mainContainer.encode(sceneReference, forKey: .sceneReference)
+		}
+		if let traits {
+			try mainContainer.encode(traits, forKey: .traits)
+		}
+		if let variables {
+			try mainContainer.encode(variables, forKey: .variables)
+		}
 		var playerUpgradesContainer = mainContainer.nestedContainer(keyedBy: ArbitraryStringCodingKeys.self, forKey: .playerUpgrades)
 		if let playerUpgrades {
 			for upgrade in playerUpgrades {
