@@ -5,6 +5,8 @@ struct LowLevelVariableReference {
 	///The type of the variable being referenced
 	///If this doesn't match the expected type of the variable, the iOS app's editor will change it, but the player will understand it just fine.
 	var type: Double?
+	var description: String?
+	var object: String?
 
 	/// Extra data. Will be overwritten by values in full regular properties when jsonified, if applicable
 	var extraData = [String: JSONType]()
@@ -14,6 +16,8 @@ extension LowLevelVariableReference: Codable {
 	enum CodingKeys: String, CodingKey {
 		case variable
 		case type
+		case description
+		case object
 	}
 	
 	init(from decoder: Decoder) throws {
@@ -30,6 +34,18 @@ extension LowLevelVariableReference: Codable {
 				case .type:
 					if let type = try? container.decode(Double.self, forKey: key) {
 						self.type = type
+					} else {
+						extraData[key.stringValue] = try container.decode(JSONType.self, forKey: key)
+					}
+				case .description:
+					if let description = try? container.decode(String.self, forKey: key) {
+						self.description = description
+					} else {
+						extraData[key.stringValue] = try container.decode(JSONType.self, forKey: key)
+					}
+				case .object:
+					if let object = try? container.decode(String.self, forKey: key) {
+						self.object = object
 					} else {
 						extraData[key.stringValue] = try container.decode(JSONType.self, forKey: key)
 					}
@@ -53,6 +69,12 @@ extension LowLevelVariableReference: Codable {
 		}
 		if let type {
 			try mainContainer.encodeIfPresent(type, forKey: .type)
+		}
+		if let description {
+			try mainContainer.encodeIfPresent(description, forKey: .description)
+		}
+		if let object {
+			try mainContainer.encodeIfPresent(object, forKey: .object)
 		}
 	}
 }
