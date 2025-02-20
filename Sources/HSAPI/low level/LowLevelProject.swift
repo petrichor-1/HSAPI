@@ -42,6 +42,7 @@ struct LowLevelProject {
 	/// The webplayer does not use this.
 	var traits: [LowLevelTrait]?
 	var variables: [LowLevelVariable]?
+	var objects: [LowLevelObject]?
 	//TODO: Community-based attributes
 
 	/// Extra data. Will be overwritten by values in full regular properties when jsonified, if applicable
@@ -67,6 +68,7 @@ extension LowLevelProject: Codable {
 		case sceneReference = "sceneReference"
 		case traits = "traits"
 		case variables = "variables"
+		case objects
 	}
 	
 	init(from decoder: Decoder) throws {
@@ -181,6 +183,12 @@ extension LowLevelProject: Codable {
 					} else {
 						extraData[key.stringValue] = try container.decode(JSONType.self, forKey: key)
 					}
+				case .objects:
+					if let objects = try? container.decode([LowLevelObject].self, forKey: key) {
+						self.objects = objects
+					} else {
+						extraData[key.stringValue] = try container.decode(JSONType.self, forKey: key)
+					}
 				}
                 continue
             }
@@ -244,6 +252,9 @@ extension LowLevelProject: Codable {
 		}
 		if let variables {
 			try mainContainer.encode(variables, forKey: .variables)
+		}
+		if let objects {
+			try mainContainer.encode(objects, forKey: .objects)
 		}
 		var playerUpgradesContainer = mainContainer.nestedContainer(keyedBy: ArbitraryStringCodingKeys.self, forKey: .playerUpgrades)
 		if let playerUpgrades {
