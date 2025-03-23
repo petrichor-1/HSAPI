@@ -30,6 +30,7 @@ struct LowLevelProject {
 	var abilities: [LowLevelAbility]?
 	var customObjects: [LowLevelCustomObject]?
 	var customRuleInstances: [LowLevelCustomRuleInstance]?
+	var customRules: [LowLevelCustomRule]?
 	///TODO: Better documentation for this
 	var eventParameters: [LowLevelEventParameter]?
 	var rules: [LowLevelRule]?
@@ -62,6 +63,7 @@ extension LowLevelProject: Codable {
 		case abilities = "abilities"
 		case customObjects = "customObjects"
 		case customRuleInstances = "customRuleInstances"
+		case customRules
 		case eventParameters = "eventParameters"
 		case rules = "rules"
 		case scenes = "scenes"
@@ -144,6 +146,12 @@ extension LowLevelProject: Codable {
 				case .customRuleInstances:
 					if let customRuleInstances = try? container.decode([LowLevelCustomRuleInstance].self, forKey: key) {
 						self.customRuleInstances = customRuleInstances
+					} else {
+						extraData[key.stringValue] = try container.decode(JSONType.self, forKey: key)
+					}
+				case .customRules:
+					if let customRules = try? container.decode([LowLevelCustomRule].self, forKey: key) {
+						self.customRules = customRules
 					} else {
 						extraData[key.stringValue] = try container.decode(JSONType.self, forKey: key)
 					}
@@ -234,6 +242,9 @@ extension LowLevelProject: Codable {
 		}
 		if let customRuleInstances {
 			try mainContainer.encode(customRuleInstances, forKey: .customRuleInstances)
+		}
+		if let customRules {
+			try mainContainer.encode(customRules, forKey: .customRules)
 		}
 		if let eventParameters {
 			try mainContainer.encode(eventParameters, forKey: .eventParameters)
