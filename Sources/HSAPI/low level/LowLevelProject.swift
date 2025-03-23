@@ -36,8 +36,7 @@ struct LowLevelProject {
 	var rules: [LowLevelRule]?
 	var scenes: [LowLevelScene]?
 	///TODO: Better documentation
-	///FIXME: "sceneReference"? And this works? what
-	var sceneReference: [LowLevelSceneReference]?
+	var sceneReferences: [LowLevelSceneReference]?
 	///An array of traits.
 	/// The iOS editor puts copies of all traits in the project here.
 	/// The webplayer does not use this.
@@ -67,7 +66,7 @@ extension LowLevelProject: Codable {
 		case eventParameters = "eventParameters"
 		case rules = "rules"
 		case scenes = "scenes"
-		case sceneReference = "sceneReference"
+		case sceneReferences = "sceneReferences"
 		case traits = "traits"
 		case variables = "variables"
 		case objects
@@ -173,9 +172,9 @@ extension LowLevelProject: Codable {
 					} else {
 						extraData[key.stringValue] = try container.decode(JSONType.self, forKey: key)
 					}
-				case .sceneReference:
-					if let sceneReference = try? container.decode([LowLevelSceneReference].self, forKey: key) {
-						self.sceneReference = sceneReference
+				case .sceneReferences:
+					if let sceneReferences = try? container.decode([LowLevelSceneReference].self, forKey: key) {
+						self.sceneReferences = sceneReferences
 					} else {
 						extraData[key.stringValue] = try container.decode(JSONType.self, forKey: key)
 					}
@@ -255,8 +254,8 @@ extension LowLevelProject: Codable {
 		if let scenes {
 			try mainContainer.encode(scenes, forKey: .scenes)
 		}
-		if let sceneReference {
-			try mainContainer.encode(sceneReference, forKey: .sceneReference)
+		if let sceneReferences {
+			try mainContainer.encode(sceneReferences, forKey: .sceneReferences)
 		}
 		if let traits {
 			try mainContainer.encode(traits, forKey: .traits)
