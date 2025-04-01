@@ -66,4 +66,15 @@ final class HSAPITests: XCTestCase {
         let reencodedJson = try decoder.decode(JSONType.self, from: reencodedData)
         XCTAssertEqual(originalJson, reencodedJson)
     }
+    func testConnectThePipesHighLevelDecoding() throws {
+        guard let url = Bundle.module.url(forResource: "connectthepipes", withExtension: "hopscotch") else {
+            XCTFail("No connectthepipes project json url")
+            return
+        }
+        guard let projectData = try? Data(contentsOf: url) else {
+            XCTFail("No connectthepipes project json")
+            return
+        }
+        let _ = try Project(decoding: projectData)
+    }
 }
